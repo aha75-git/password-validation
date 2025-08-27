@@ -52,7 +52,13 @@ public class PasswordValidatorTest {
 
     @Test
     void containsDigit_shouldReturnTrue_whenPasswordContainsDigit() {
-        //assertTrue(PasswordValidator.containsDigit("Abc1defg"));
+        assertTrue(PasswordValidator.containsDigit("Abc1defg"));
+        assertTrue(PasswordValidator.containsDigit("Abc1defg22"));
+    }
+
+    @Test
+    void containsDigit_shouldReturnFalse_whenPasswordNotContainsDigit() {
+        assertFalse(PasswordValidator.containsDigit("Abcdefg"));
     }
 
     @Test
