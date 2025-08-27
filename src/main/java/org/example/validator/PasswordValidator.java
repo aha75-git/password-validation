@@ -48,6 +48,7 @@ public final class PasswordValidator {
     }
 
     // Bonus:
+    // TODO
     public static boolean containsSpecialChar(String password, String allowed) {
         return false;
     }

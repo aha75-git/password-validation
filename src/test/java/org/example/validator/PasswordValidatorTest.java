@@ -119,7 +119,7 @@ public class PasswordValidatorTest {
 
     @Test
     void containsSpecialChar_shouldReturnTrue_whenPasswordContainsAllowedSpecialChar() {
-
+        // TODO
     }
 
 
