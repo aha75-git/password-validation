@@ -1,6 +1,10 @@
 package org.example.validator;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 
 public final class PasswordValidator {
 
@@ -35,8 +39,7 @@ public final class PasswordValidator {
     // kleine interne Liste
     public static boolean isCommonPassword(String password) {
         String p = password == null ? "" : password.trim().toLowerCase(Locale.ROOT);
-        String[] passwords = {"password", "Passwort1", "12345678", "Aa345678"};
-        for (String pass :  passwords) {
+        for (String pass :  getCommonPasswords()) {
             if (p.equals(pass.toLowerCase(Locale.ROOT))) {
                 return true;
             }
@@ -53,5 +56,14 @@ public final class PasswordValidator {
     // nutzt die obenstehenden Checks
     public static boolean isValid(String password) {
         return false;
+    }
+
+    private static @NotNull Set<String> getCommonPasswords () {
+        Set<String> commonPasswords = new HashSet<String>();
+        commonPasswords.add("Passwort1");
+        commonPasswords.add("password");
+        commonPasswords.add("12345678");
+        commonPasswords.add("Aa345678");
+        return commonPasswords;
     }
 }

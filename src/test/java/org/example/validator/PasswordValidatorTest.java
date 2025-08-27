@@ -83,6 +83,13 @@ public class PasswordValidatorTest {
     }
 
     @Test
+    void isCommonPassword_shouldReturnFalse_whenPasswordIsNotCommon() {
+        assertFalse(PasswordValidator.isCommonPassword("Abc44zzudA##"));
+        assertFalse(PasswordValidator.isCommonPassword("sfd5gdg?dsAA6"));
+    }
+
+
+    @Test
     void containsSpecialChar() {
     }
 
