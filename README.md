@@ -46,6 +46,12 @@ Ein Badge, das den Status der Continuous Integration (CI) anzeigt.
 
 [![Java CI with Maven](https://github.com/aha75-git/password-validation/actions/workflows/maven.yml/badge.svg)](https://github.com/aha75-git/password-validation/actions/workflows/maven.yml)
 
+
+## Bonuspaket
+
+- Implementierung der Methode `containsSpecialChar(...)`, die überprüft, ob ein Passwort mindestens ein erlaubtes Sonderzeichen enthält.
+- Erweiterte Passwort-Policy zur Verbesserung der Sicherheit.
+
 ## Beispiel-Aufrufe
 
 Hier sind einige Beispielaufrufe für die Verwendung des Passwort-Validators:
@@ -54,9 +60,15 @@ Hier sind einige Beispielaufrufe für die Verwendung des Passwort-Validators:
 public class Main {
     public static void main(String[] args) {
         String password = "Test@1234";
+        String specialChar = "!@#$%^&*()-_+=?.,;:";
+        
+        // Beispiel ohne Sonderzeichen
         boolean isValid = PasswordValidator.isValid(password);
         System.out.println("Ist das Passwort gültig? " + isValid);
+        
+        // Beispiel mit Sonderzeichen
+        isValid = PasswordValidator.isValid(password, specialChar);
+        System.out.println("Ist das Passwort mit Sonderzeichen gültig? " + isValid);
     }
 }
 ```
-

@@ -128,7 +128,7 @@ public class PasswordValidatorTest {
     }
 
     /*
-     *  Gesamte Validierung
+     *  Gesamte Validierung ohne Sonderzeichen
      */
 
     @Test
@@ -177,4 +177,21 @@ public class PasswordValidatorTest {
     void isValid_shouldReturnFalse_whenPasswordNotContainsLower() {
         assertFalse(PasswordValidator.isValid("G?DSAA77VVAF"));
     }
+
+
+    /*
+     *  Gesamte Validierung mit Sonderzeichen
+     */
+    @Test
+    void isValid_shouldReturnTrue_whenPasswordIsValidAndContainsAllowedSpecialChar() {
+        assertTrue(PasswordValidator.isValid("sfd;B5gdg?dsAA6#", "!@#$%^&*()-_+=?.,;:"));
+    }
+
+    @Test
+    void isValid_shouldReturnFalse_whenPasswordNotContainsAllowedSpecialChar() {
+        assertFalse(PasswordValidator.isValid("sfdB5gdgdsAA6", "!@#$%^&*()-_+=?.,;:"));
+        assertFalse(PasswordValidator.isValid("sfdB5{gdgds}AA6", "!@#$%^&*()-_+=?.,;:"));
+    }
+
+
 }

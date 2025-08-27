@@ -76,6 +76,10 @@ public final class PasswordValidator {
                 containsUpperAndLower(password);
     }
 
+    public static boolean isValid(String password, String allowed) {
+        return isValid(password) && containsSpecialChar(password, allowed);
+    }
+
     private static @NotNull Set<String> getCommonPasswords () {
         Set<String> commonPasswords = new HashSet<>();
         commonPasswords.add("Passwort1");
