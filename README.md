@@ -44,6 +44,8 @@ target/*.jar
 ## CI-Status-Badge (Actions)
 Ein Badge, das den Status der Continuous Integration (CI) anzeigt.
 
+[![Java CI with Maven](https://github.com/aha75-git/password-validation/actions/workflows/maven.yml/badge.svg)](https://github.com/aha75-git/password-validation/actions/workflows/maven.yml)
+
 ## Beispiel-Aufrufe
 
 Hier sind einige Beispielaufrufe für die Verwendung des Passwort-Validators:
