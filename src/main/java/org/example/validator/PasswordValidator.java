@@ -2,7 +2,14 @@ package org.example.validator;
 
 public final class PasswordValidator {
     public static boolean hasMinLength(String password, int min) {
-        return false;
+        if (password == null || password.isEmpty()) {
+            return false;
+        }
+        // Prüfen auf führende und abschließende Leerzeichen
+        if (password.length() != password.trim().length()) {
+            return false;
+        }
+        return password.length() >= min;
     }
 
     public static boolean containsDigit(String password) {
