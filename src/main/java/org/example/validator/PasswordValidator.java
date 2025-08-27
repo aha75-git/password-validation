@@ -48,8 +48,20 @@ public final class PasswordValidator {
     }
 
     // Bonus:
-    // TODO
     public static boolean containsSpecialChar(String password, String allowed) {
+        //String s = ".*[" + allowed + "].*";
+        //return password.matches(s);
+
+        char[] allowedChars = allowed.toCharArray();
+
+        // Überprüfe jedes Zeichen im Passwort
+        for (char c : password.toCharArray()) {
+            for (char allowedChar : allowedChars) {
+                if (c == allowedChar) {
+                    return true; // Sonderzeichen gefunden
+                }
+            }
+        }
         return false;
     }
 
@@ -65,7 +77,7 @@ public final class PasswordValidator {
     }
 
     private static @NotNull Set<String> getCommonPasswords () {
-        Set<String> commonPasswords = new HashSet<String>();
+        Set<String> commonPasswords = new HashSet<>();
         commonPasswords.add("Passwort1");
         commonPasswords.add("password");
         commonPasswords.add("12345678");

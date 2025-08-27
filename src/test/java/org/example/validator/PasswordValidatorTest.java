@@ -119,9 +119,13 @@ public class PasswordValidatorTest {
 
     @Test
     void containsSpecialChar_shouldReturnTrue_whenPasswordContainsAllowedSpecialChar() {
-        // TODO
+        assertTrue(PasswordValidator.containsSpecialChar("sfd;B5gdg?dsAA6#", "!@#$%^&*()-_+=?.,;:"));
     }
 
+    @Test
+    void containsSpecialChar_shouldReturnFalse_whenPasswordNotContainsAllowedSpecialChar() {
+        assertFalse(PasswordValidator.containsSpecialChar("sfdB5gdgdsAA6", "!@#$%^&*()-_+=?.,;:"));
+    }
 
     /*
      *  Gesamte Validierung
