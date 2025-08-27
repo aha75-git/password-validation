@@ -55,7 +55,12 @@ public final class PasswordValidator {
     // Optionale Gesamtsicht:
     // nutzt die obenstehenden Checks
     public static boolean isValid(String password) {
-        return false;
+        return !isPasswordEmpty(password) &&
+                !hasLeadingTrailingSpaces(password) &&
+                !isCommonPassword(password) &&
+                hasMinLength(password, 8) &&
+                containsDigit(password) &&
+                containsUpperAndLower(password);
     }
 
     private static @NotNull Set<String> getCommonPasswords () {

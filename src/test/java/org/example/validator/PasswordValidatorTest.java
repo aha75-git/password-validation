@@ -6,6 +6,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class PasswordValidatorTest {
 
+    /*
+     *  Mindestlänge
+     */
+
     @Test
     void hasMinLength_shouldReturnTrue_whenMinLength() {
         assertTrue(PasswordValidator.hasMinLength("Abc1defg", 8));
@@ -20,6 +24,11 @@ public class PasswordValidatorTest {
     void hasMinLength_shouldReturnFalse_whenLessMinLength() {
         assertFalse(PasswordValidator.hasMinLength("Abc1def", 8));
     }
+
+
+    /*
+     *  Passwort ist leer/null, führende/abschließende Leerzeichen
+     */
 
     @Test
     @SuppressWarnings("all")
@@ -50,6 +59,11 @@ public class PasswordValidatorTest {
         assertFalse(PasswordValidator.hasLeadingTrailingSpaces("Abc1defg"));
     }
 
+
+    /*
+     *  Ziffer enthalten
+     */
+
     @Test
     void containsDigit_shouldReturnTrue_whenPasswordContainsDigit() {
         assertTrue(PasswordValidator.containsDigit("Abc1defg"));
@@ -60,6 +74,11 @@ public class PasswordValidatorTest {
     void containsDigit_shouldReturnFalse_whenPasswordNotContainsDigit() {
         assertFalse(PasswordValidator.containsDigit("Abcdefg"));
     }
+
+
+    /*
+     *  Groß und Kleinbuchstaben
+     */
 
     @Test
     void containsUpperAndLower_shouldReturnTrue_whenPasswordContainsUpperAndLower() {
@@ -76,6 +95,11 @@ public class PasswordValidatorTest {
         assertFalse(PasswordValidator.containsUpperAndLower("abc1defg"));
     }
 
+
+    /*
+     *  Häufige Passwörter
+     */
+
     @Test
     void isCommonPassword_shouldReturnTrue_whenPasswordIsCommon() {
         assertTrue(PasswordValidator.isCommonPassword("Passwort1"));
@@ -89,11 +113,64 @@ public class PasswordValidatorTest {
     }
 
 
+    /*
+     *  Sonderzeichen
+     */
+
     @Test
-    void containsSpecialChar() {
+    void containsSpecialChar_shouldReturnTrue_whenPasswordContainsAllowedSpecialChar() {
+
+    }
+
+
+    /*
+     *  Gesamte Validierung
+     */
+
+    @Test
+    void isValid_shouldReturnTrue_whenPasswordIsValid() {
+        assertTrue(PasswordValidator.isValid("sfdB5gdg?dsAA6"));
     }
 
     @Test
-    void isValid() {
+    void isValid_shouldReturnFalse_whenPasswordIsCommon() {
+        assertFalse(PasswordValidator.isValid("Passwort1"));
+    }
+
+    @Test
+    void isValid_shouldReturnFalse_whenPasswordIsEmpty() {
+        assertFalse(PasswordValidator.isValid(""));
+    }
+
+    @Test
+    void isValid_shouldReturnFalse_whenPasswordIsNull() {
+        assertFalse(PasswordValidator.isValid(null));
+    }
+
+    @Test
+    void isValid_shouldReturnFalse_whenPasswordHasLeadingTrailingSpaces() {
+        assertFalse(PasswordValidator.isValid(" sfdB5gdg?dsAA6"));
+        assertFalse(PasswordValidator.isValid(" sfdB5gdg?dsAA6 "));
+        assertFalse(PasswordValidator.isValid("sfdB5gdg?dsAA6 "));
+    }
+
+    @Test
+    void isValid_shouldReturnFalse_whenPasswordHasLessMinLength() {
+        assertFalse(PasswordValidator.isValid("g?dsAA6"));
+    }
+
+    @Test
+    void isValid_shouldReturnFalse_whenPasswordNotContainsDigit() {
+        assertFalse(PasswordValidator.isValid("g?dsAAvvH"));
+    }
+
+    @Test
+    void isValid_shouldReturnFalse_whenPasswordNotContainsUpper() {
+        assertFalse(PasswordValidator.isValid("g?dsaa77vvaf"));
+    }
+
+    @Test
+    void isValid_shouldReturnFalse_whenPasswordNotContainsLower() {
+        assertFalse(PasswordValidator.isValid("G?DSAA77VVAF"));
     }
 }
