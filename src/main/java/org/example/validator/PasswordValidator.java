@@ -1,12 +1,17 @@
 package org.example.validator;
 
 public final class PasswordValidator {
+
+    public static boolean hasLeadingTrailingSpaces(String password) {
+        return password.length() != password.trim().length();
+    }
+
+    public static boolean isPasswordEmpty(String password) {
+        return password == null || password.isEmpty();
+    }
+
     public static boolean hasMinLength(String password, int min) {
-        if (password == null || password.isEmpty()) {
-            return false;
-        }
-        // Prüfen auf führende und abschließende Leerzeichen
-        if (password.length() != password.trim().length()) {
+        if (isPasswordEmpty(password)) {
             return false;
         }
         return password.length() >= min;

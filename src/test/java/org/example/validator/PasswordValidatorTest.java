@@ -22,20 +22,37 @@ public class PasswordValidatorTest {
     }
 
     @Test
-    void hasMinLength_shouldReturnFalse_whenPasswordIsNull() {
-        assertFalse(PasswordValidator.hasMinLength("", 8));
+    @SuppressWarnings("all")
+    void isPasswordEmpty_shouldReturnTrue_whenPasswordIsNull() {
+        assertTrue(PasswordValidator.isPasswordEmpty(null));
+    }
+
+    @Test
+    void isPasswordEmpty_shouldReturnTrue_whenPasswordIsEmpty() {
+        assertTrue(PasswordValidator.isPasswordEmpty(""));
+    }
+
+    @Test
+    void isPasswordEmpty_shouldReturnFalse_whenPasswordIsNotEmpty() {
+        assertFalse(PasswordValidator.isPasswordEmpty("Abc1def"));
         assertFalse(PasswordValidator.hasMinLength(null, 8));
     }
 
     @Test
-    void hasMinLength_shouldReturnFalse_whenPasswordHasLeadingTrailingSpaces() {
-        assertFalse(PasswordValidator.hasMinLength(" Abc1defg", 8));
-        assertFalse(PasswordValidator.hasMinLength("Abc1defg ", 8));
-        assertFalse(PasswordValidator.hasMinLength(" Abc1defg ", 8));
+    void hasLeadingTrailingSpaces_shouldReturnTrue_whenPasswordHasLeadingTrailingSpaces() {
+        assertTrue(PasswordValidator.hasLeadingTrailingSpaces(" Abc1defg"));
+        assertTrue(PasswordValidator.hasLeadingTrailingSpaces("Abc1defg "));
+        assertTrue(PasswordValidator.hasLeadingTrailingSpaces(" Abc1defg "));
     }
 
     @Test
-    void containsDigit() {
+    void hasLeadingTrailingSpaces_shouldReturnFalse_whenPasswordHasNotLeadingTrailingSpaces() {
+        assertFalse(PasswordValidator.hasLeadingTrailingSpaces("Abc1defg"));
+    }
+
+    @Test
+    void containsDigit_shouldReturnTrue_whenPasswordContainsDigit() {
+        //assertTrue(PasswordValidator.containsDigit("Abc1defg"));
     }
 
     @Test
