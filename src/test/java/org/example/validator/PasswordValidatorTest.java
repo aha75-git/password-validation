@@ -194,4 +194,19 @@ public class PasswordValidatorTest {
     }
 
 
+    /*
+     *  Bonuspaket
+     */
+
+    @Test
+    void generateSecurePassword_shouldGenerateSecurePassword() {
+        String password = PasswordValidator.generateSecurePassword( 8, "!@#$%^&*()-_+=?.,;:");
+        assertTrue(PasswordValidator.isValid(password, "!@#$%^&*()-_+=?.,;:"), password);
+    }
+
+    @Test
+    void generateSecurePassword_shouldThrowException_whenLengthIsLessThan8() {
+        //String password = PasswordValidator.generateSecurePassword( 7, "!@#$%^&*()-_+=?.,;:");
+        assertThrows(IllegalArgumentException.class, () -> PasswordValidator.generateSecurePassword( 7, "!@#$%^&*()-_+=?.,;:"));
+    }
 }

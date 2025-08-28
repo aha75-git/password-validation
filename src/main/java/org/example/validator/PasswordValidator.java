@@ -2,11 +2,18 @@ package org.example.validator;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.security.SecureRandom;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
 public final class PasswordValidator {
+
+    private static final String ALPHABET_UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    private static final String ALPHABET_LOWER = "abcdefghijklmnopqrsßtuvwxyz";
+    private static final String ALPHABET_NUMBERS = "0123456789";
+    private static final SecureRandom SECURE_RANDOM = new SecureRandom();
+
 
     public static boolean hasLeadingTrailingSpaces(String password) {
         return password.length() != password.trim().length();
@@ -87,5 +94,36 @@ public final class PasswordValidator {
         commonPasswords.add("12345678");
         commonPasswords.add("Aa345678");
         return commonPasswords;
+    }
+
+
+    public static String generateSecurePassword(int length, String allowedSpecials) {
+        if (length < 8) {
+            throw new IllegalArgumentException("Das Passwort muss mindestens 8 Zeichen lang sein.");
+        }
+        StringBuilder securePassword = new StringBuilder();
+        for (int i = 0; i < length; i+=4) {
+            securePassword.append(getRandomCharacterUpper());
+            securePassword.append(getRandomCharacterOfSpecialCharacter(allowedSpecials));
+            securePassword.append(getRandomCharacterLower());
+            securePassword.append(getRandomCharacterNumber());
+        }
+        return securePassword.toString();
+    }
+
+    private static char getRandomCharacterUpper() {
+        return ALPHABET_UPPER.charAt(SECURE_RANDOM.nextInt(ALPHABET_UPPER.length()));
+    }
+
+    private static char getRandomCharacterLower() {
+        return ALPHABET_LOWER.charAt(SECURE_RANDOM.nextInt(ALPHABET_LOWER.length()));
+    }
+
+    private static char getRandomCharacterNumber() {
+        return ALPHABET_NUMBERS.charAt(SECURE_RANDOM.nextInt(ALPHABET_NUMBERS.length()));
+    }
+
+    private static char getRandomCharacterOfSpecialCharacter(String allowedSpecials) {
+        return allowedSpecials.charAt(SECURE_RANDOM.nextInt(allowedSpecials.length()));
     }
 }
