@@ -14,7 +14,6 @@ public final class PasswordValidator {
     private static final String ALPHABET_NUMBERS = "0123456789";
     private static final SecureRandom SECURE_RANDOM = new SecureRandom();
 
-
     public static boolean hasLeadingTrailingSpaces(String password) {
         return password.length() != password.trim().length();
     }
@@ -39,8 +38,16 @@ public final class PasswordValidator {
         return false;
     }
 
+    public static boolean containsUpper(String password) {
+        return password.matches(".*[A-Z].*");
+    }
+
+    public static boolean containsLower(String password) {
+        return password.matches(".*[a-z].*");
+    }
+
     public static boolean containsUpperAndLower(String password) {
-        return password.matches(".*[a-z].*") && password.matches(".*[A-Z].*");
+        return containsLower(password) && containsUpper(password);
     }
 
     // kleine interne Liste
@@ -72,6 +79,33 @@ public final class PasswordValidator {
         return false;
     }
 
+    public static boolean validateSpecialChar(String password, String allowed) {
+        String cleanedPassword = cleanePassword(password);
+        if (cleanedPassword.isEmpty()){
+            return true;
+        }
+        char[] allowedChars = allowed.toCharArray();
+        // Überprüfe jedes Zeichen im Passwort, ob es erlaubt ist
+        for (char c : cleanedPassword.toCharArray()) {
+            boolean isAllowed = false;
+            for (char allowedChar : allowedChars) {
+                if (c == allowedChar) {
+                    isAllowed = true; // Sonderzeichen gefunden
+                    break;
+                }
+            }
+            if (!isAllowed) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private static String cleanePassword(String password) {
+        // Regex: [^a-zA-Z0-9] entfernt alle Zeichen, die keine Buchstaben oder Ziffern sind
+        return password.replaceAll("[a-zA-Z0-9]", "");
+    }
+
     // Optionale Gesamtsicht:
     // nutzt die obenstehenden Checks
     public static boolean isValid(String password) {
@@ -84,8 +118,43 @@ public final class PasswordValidator {
     }
 
     public static boolean isValid(String password, String allowed) {
-        return isValid(password) && containsSpecialChar(password, allowed);
+        return isValid(password) && validateSpecialChar(password, allowed) && containsSpecialChar(password, allowed);
     }
+
+    public static ValidationResult validatePassword(String password, String allowed) {
+        ValidationResult result = new ValidationResult();
+
+        if (isPasswordEmpty(password)) {
+            result.addReason(Reason.IS_EMPTY);
+        }
+        if (hasLeadingTrailingSpaces(password)) {
+            result.addReason(Reason.LEADING_TRAILING_SPACES);
+        }
+        if (!hasMinLength(password, 8)) {
+            result.addReason(Reason.TOO_SHORT);
+        }
+        if (isCommonPassword(password)) {
+            result.addReason(Reason.WEAK_PASSWORD);
+        }
+        if (!containsUpper(password)) {
+            result.addReason(Reason.NO_UPPERCASE);
+        }
+        if (!containsLower(password)) {
+            result.addReason(Reason.NO_LOWERCASE);
+        }
+        if (!containsDigit(password)) {
+            result.addReason(Reason.NO_DIGIT);
+        }
+        if(!validateSpecialChar(password, allowed)) {
+            result.addReason(Reason.WRONG_SPECIAL_CHAR);
+        }
+        if (!containsSpecialChar(password, allowed)) {
+            result.addReason(Reason.NO_SPECIAL_CHAR);
+        }
+
+        return result;
+    }
+
 
     private static @NotNull Set<String> getCommonPasswords () {
         Set<String> commonPasswords = new HashSet<>();
@@ -93,6 +162,7 @@ public final class PasswordValidator {
         commonPasswords.add("password");
         commonPasswords.add("12345678");
         commonPasswords.add("Aa345678");
+        commonPasswords.add("Passwort");
         return commonPasswords;
     }
 

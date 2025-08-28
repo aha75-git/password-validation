@@ -51,6 +51,8 @@ Ein Badge, das den Status der Continuous Integration (CI) anzeigt.
 
 - Implementierung der Methode `containsSpecialChar(...)`, die überprüft, ob ein Passwort mindestens ein erlaubtes Sonderzeichen enthält.
 - Erweiterte Passwort-Policy zur Verbesserung der Sicherheit.
+- Implementierung Passwort-Generator mit `SecureRandom`, um sichere Passwörter zu generieren. Die Methode `generateSecurePassword(int length, String allowedSpecials)` erzeugt Passwörter, die immer den definierten Sicherheitsanforderungen entsprechen.
+- Fehlermeldungen statt boolesch: Optional ValidationResult (z. B. List<Reason>), um dem Nutzer genaue Gründe auszugeben.
 
 ## Beispiel-Aufrufe
 
@@ -69,6 +71,17 @@ public class Main {
         // Beispiel mit Sonderzeichen
         isValid = PasswordValidator.isValid(password, specialChar);
         System.out.println("Ist das Passwort mit Sonderzeichen gültig? " + isValid);
+        
+        // Beispiel mit Passwort-Generator und Fehlermeldungen statt boolesch
+        String generatedPassword = PasswordValidator.generateSecurePassword(10, allowed);
+        ValidationResult validationResult = PasswordValidator.validatePassword(password, allowed);
+        if(validationResult.isValid()) {
+            System.out.println("Das Passwort ist gültig");
+        } else {
+            for(Reason reason : validationResult.getReasons()) {
+                System.out.println(reason.getMessage());
+            }
+        }
     }
 }
 ```

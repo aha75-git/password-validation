@@ -209,4 +209,93 @@ public class PasswordValidatorTest {
         //String password = PasswordValidator.generateSecurePassword( 7, "!@#$%^&*()-_+=?.,;:");
         assertThrows(IllegalArgumentException.class, () -> PasswordValidator.generateSecurePassword( 7, "!@#$%^&*()-_+=?.,;:"));
     }
+
+
+    @Test
+    void validatePassword_shouldReturnTrue_whenPasswordIsValid() {
+        ValidationResult validationResult = PasswordValidator.validatePassword("sfd;B5gdg?dsAA6#", "!@#$%^&*()-_+=?.,;:");
+        assertTrue(validationResult.isValid());
+    }
+
+    @Test
+    void validatePassword_shouldReturnFalse_whenPasswordIsNotValid() {
+        ValidationResult validationResult = PasswordValidator.validatePassword("sfd;B5gdg?dsAA6#{[}", "!@#$%^&*()-_+=?.,;:");
+        assertFalse(validationResult.isValid());
+    }
+
+    @Test
+    void validatePassword_shouldReturnTrue_whenPasswordIsNotValidAndReasonIsEmpty() {
+        ValidationResult validationResult = PasswordValidator.validatePassword("", "!@#$%^&*()-_+=?.,;:");
+        assertTrue(validationResult.getReasons().contains(Reason.IS_EMPTY));
+    }
+
+    @Test
+    void validatePassword_shouldReturnTrue_whenPasswordIsNotValidAndReasonLeadingTrailingSpaces() {
+        String allowed = "!@#$%^&*()-_+=?.,;:";
+        // Test 1
+        ValidationResult validationResult = PasswordValidator.validatePassword(" sfd;B5gdg?dsAA6#", allowed);
+        assertTrue(validationResult.getReasons().contains(Reason.LEADING_TRAILING_SPACES));
+
+        // Test 2
+        validationResult = PasswordValidator.validatePassword(" sfd;B5gdg?dsAA6# ", allowed);
+        assertTrue(validationResult.getReasons().contains(Reason.LEADING_TRAILING_SPACES));
+
+        // Test 3
+        validationResult = PasswordValidator.validatePassword("sfd;B5gdg?dsAA6# ", allowed);
+        assertTrue(validationResult.getReasons().contains(Reason.LEADING_TRAILING_SPACES));
+    }
+
+    @Test
+    void validatePassword_shouldReturnTrue_whenPasswordIsNotValidAndReasonToShort() {
+        ValidationResult validationResult = PasswordValidator.validatePassword("B5gdg?", "!@#$%^&*()-_+=?.,;:");
+        assertTrue(validationResult.getReasons().contains(Reason.TOO_SHORT));
+    }
+
+    @Test
+    void validatePassword_shouldReturnTrue_whenPasswordIsNotValidAndReasonNoLowercase() {
+        ValidationResult validationResult = PasswordValidator.validatePassword("SFD;B5GDG?DSAA6#", "!@#$%^&*()-_+=?.,;:");
+        assertTrue(validationResult.getReasons().contains(Reason.NO_LOWERCASE));
+    }
+
+    @Test
+    void validatePassword_shouldReturnTrue_whenPasswordIsNotValidAndReasonNoUppercase() {
+        ValidationResult validationResult = PasswordValidator.validatePassword("sfd;b5gdg?dsaa6#", "!@#$%^&*()-_+=?.,;:");
+        assertTrue(validationResult.getReasons().contains(Reason.NO_UPPERCASE));
+    }
+
+    @Test
+    void validatePassword_shouldReturnTrue_whenPasswordIsNotValidAndReasonNoDigit() {
+        ValidationResult validationResult = PasswordValidator.validatePassword("sfd;bgdg?dsaa#", "!@#$%^&*()-_+=?.,;:");
+        assertTrue(validationResult.getReasons().contains(Reason.NO_DIGIT));
+    }
+
+    @Test
+    void validatePassword_shouldReturnTrue_whenPasswordIsNotValidAndReasonWeakPassword() {
+        ValidationResult validationResult = PasswordValidator.validatePassword("Passwort1", "!@#$%^&*()-_+=?.,;:");
+        assertTrue(validationResult.getReasons().contains(Reason.WEAK_PASSWORD));
+    }
+
+    @Test
+    void validatePassword_shouldReturnTrue_whenPasswordIsNotValidAndReasonWrongSpecialChar() {
+        ValidationResult validationResult = PasswordValidator.validatePassword("sfd;B5gdg?dsAA6#{[}", "!@#$%^&*()-_+=?.,;:");
+        assertTrue(validationResult.getReasons().contains(Reason.WRONG_SPECIAL_CHAR));
+    }
+
+    @Test
+    void validatePassword_shouldReturnTrue_whenPasswordIsNotValidAndReasonNoSpecialChar() {
+        ValidationResult validationResult = PasswordValidator.validatePassword("sfdB5gdgdsAA6", "!@#$%^&*()-_+=?.,;:");
+        assertTrue(validationResult.getReasons().contains(Reason.NO_SPECIAL_CHAR));
+    }
+
+    @Test
+    void validatePassword_shouldReturnTrue_whenPasswordIsNotValidAndHasSomeReasons() {
+        ValidationResult validationResult = PasswordValidator.validatePassword("sfdg ", "!@#$%^&*()-_+=?.,;:");
+        boolean result = validationResult.getReasons().contains(Reason.NO_DIGIT) &&
+                validationResult.getReasons().contains(Reason.NO_SPECIAL_CHAR) &&
+                validationResult.getReasons().contains(Reason.LEADING_TRAILING_SPACES) &&
+                validationResult.getReasons().contains(Reason.NO_UPPERCASE) &&
+                validationResult.getReasons().contains(Reason.TOO_SHORT);
+
+        assertTrue(result);
+    }
 }
